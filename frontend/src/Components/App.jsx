@@ -4,9 +4,9 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
-import { AuthProvider } from './context/index.jsx';
-import { LoginPage } from './Components/LoginPage.jsx';
-import { NotFound } from './Components/NotFound.jsx';
+import AuthProvider from '../context/index.jsx';
+import LoginPage from './LoginPage.jsx';
+import NotFound from './NotFound.jsx';
 import routes from './routes.js';
 
 const PrivatRoute = ({ children }) => {
