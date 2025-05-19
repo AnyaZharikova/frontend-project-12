@@ -7,7 +7,7 @@ import {
 import AuthProvider from '../context/index.jsx';
 import LoginPage from './LoginPage.jsx';
 import NotFound from './NotFound.jsx';
-import routes from './routes.js';
+import routes from '../routes.js';
 
 const PrivatRoute = ({ children }) => {
   const token = localStorage.getItem('token');
