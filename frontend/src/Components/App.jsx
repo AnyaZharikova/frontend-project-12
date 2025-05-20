@@ -5,6 +5,7 @@ import {
   Navigate,
 } from 'react-router-dom';
 import AuthProvider from '../context/index.jsx';
+import MainPage from './MainPage.jsx';
 import LoginPage from './LoginPage.jsx';
 import NotFound from './NotFound.jsx';
 import routes from '../routes.js';
@@ -18,8 +19,15 @@ const App = () => (
   <BrowserRouter>
     <AuthProvider>
       <Routes>
-        <Route path={routes.mainPage} element={<PrivatRoute />} />
-        <Route path={routes.LoginPage} element={<LoginPage />} />
+        <Route
+          path={routes.mainPage}
+          element={(
+            <PrivatRoute>
+              <MainPage />
+            </PrivatRoute>
+          )}
+        />
+        <Route path={routes.loginPage} element={<LoginPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AuthProvider>
