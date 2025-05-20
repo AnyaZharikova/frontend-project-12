@@ -39,9 +39,11 @@ const LoginPage = () => {
       setAuthFailed(false);
 
       try {
-        const response = await axios.post(routes.loginPath, values);
+        const response = await axios.post(routes.loginPath(), values);
         const { username, token } = response.data;
+        // save to redux
         dispatch(setCredentials({ username, token }));
+        // save token to localStorage
         localStorage.setItem('token', JSON.stringify(token));
         const from = location.state?.from?.pathname || '/';
         navigate(from);
@@ -67,7 +69,7 @@ const LoginPage = () => {
 
               <Form onSubmit={formik.handleSubmit}>
                 <Form.Group className="mb-3">
-                  <Form.Label htmlFor="username">Логин или email</Form.Label>
+                  <Form.Label htmlFor="username">Логин</Form.Label>
                   <Form.Control
                     id="username"
                     name="username"
