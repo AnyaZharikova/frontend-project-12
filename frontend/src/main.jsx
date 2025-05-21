@@ -9,7 +9,8 @@ import App from './Components/App.jsx';
 import store from './slices/index.js';
 import { setCredentials } from './slices/authSlice.js';
 
-const tokenFromStorage = JSON.parse(localStorage.getItem('token'));
+const tokenFromStorage = localStorage.getItem('token');
+const parsedToken = tokenFromStorage ? JSON.parse(tokenFromStorage) : null;
 
 if (tokenFromStorage) {
   store.dispatch(setCredentials({ token: tokenFromStorage }));
