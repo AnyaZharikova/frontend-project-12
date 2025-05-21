@@ -4,4 +4,5 @@ export default {
   mainPage: '/',
   loginPage: '/login',
   loginPath: () => `${apiPath}/login/`,
+  chatPage: '/chat',
 };
