@@ -12,6 +12,7 @@ import routes from '../routes.js';
 
 const PrivatRoute = ({ children }) => {
   const token = useSelector((state) => state.auth.token);
+  console.log('PrivatRoute token:', token);
   return token ? children : <Navigate to="/login" replace />;
 };
 

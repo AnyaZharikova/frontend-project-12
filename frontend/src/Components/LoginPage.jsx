@@ -45,7 +45,12 @@ const LoginPage = () => {
         // save to redux
         dispatch(setCredentials({ username, token }));
         // save token to localStorage
-        localStorage.setItem('token', JSON.stringify(token)); // localStorage stores only strings
+        if (token && typeof token === 'string') {
+          localStorage.setItem('token', JSON.stringify(token)); // localStorage stores only strings
+        } else {
+          throw new Error('Token is missing or of the wrong type');
+        }
+
         const from = location.state?.from?.pathname || '/';
         navigate(from);
       } catch (err) {
