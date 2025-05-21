@@ -13,7 +13,7 @@ const tokenFromStorage = localStorage.getItem('token');
 const parsedToken = tokenFromStorage ? JSON.parse(tokenFromStorage) : null;
 
 if (tokenFromStorage) {
-  store.dispatch(setCredentials({ token: tokenFromStorage }));
+  store.dispatch(setCredentials({ token: parsedToken }));
 }
 
 const mountNode = document.getElementById('root');
