@@ -40,11 +40,12 @@ const LoginPage = () => {
 
       try {
         const response = await axios.post(routes.loginPath(), values);
+        console.log('response.data:', response.data); // If the token is not there, the problem is in the API or in the request.
         const { username, token } = response.data;
         // save to redux
         dispatch(setCredentials({ username, token }));
         // save token to localStorage
-        localStorage.setItem('token', JSON.stringify(token));
+        localStorage.setItem('token', JSON.stringify(token)); // localStorage stores only strings
         const from = location.state?.from?.pathname || '/';
         navigate(from);
       } catch (err) {
