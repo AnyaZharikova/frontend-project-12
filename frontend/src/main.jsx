@@ -10,10 +10,9 @@ import store from './slices/index.js';
 import { setCredentials } from './slices/authSlice.js';
 
 const tokenFromStorage = JSON.parse(localStorage.getItem('token'));
-const usernameFromStorage = JSON.parse(localStorage.getItem('username'));
 
 if (tokenFromStorage) {
-  store.dispatch(setCredentials({ username: usernameFromStorage, token: tokenFromStorage }));
+  store.dispatch(setCredentials({ token: tokenFromStorage }));
 }
 
 const mountNode = document.getElementById('root');
