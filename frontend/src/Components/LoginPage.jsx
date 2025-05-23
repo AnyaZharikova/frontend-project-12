@@ -39,7 +39,7 @@ const LoginPage = () => {
       setAuthFailed(false);
 
       try {
-        const response = await axios.post(routes.loginPath(), values);
+        const response = await axios.post(routes.loginPath, values);
         console.log('response.data:', response.data); // If the token is not there, the problem is in the API or in the request.
         const { username, token } = response.data;
         // save to redux
