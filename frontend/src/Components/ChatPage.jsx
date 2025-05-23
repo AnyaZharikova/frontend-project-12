@@ -19,13 +19,6 @@ const ChatPage = () => {
 
   const [activeChannelId, setActiveChannelId] = useState(null);
 
-  console.log('isLoadingChannels:', isLoadingChannels);
-  console.log('isLoadingMessages:', isLoadingMessages);
-  console.log('isErrorChannels:', isErrorChannels);
-  console.log('isErrorMessages:', isErrorMessages);
-  console.log('channels:', channels);
-  console.log('messages:', messages);
-
   if (isLoadingChannels || isLoadingMessages) {
     return <div className="text-center mt-5">Загрузка...</div>;
   }
@@ -57,10 +50,9 @@ const ChatPage = () => {
           <div className="d-flex flex-column h-100">
             <div className="bg-light mb-4 p-3 shadow-sm small">
               <p className="m-0">
-                <b>{activeChannel?.name || '...'}</b>
-                <span className="text-muted">
-                  {filteredMessages.length}
-                  сообщений
+                <b className="d-block">{`# ${activeChannel?.name || '...'}`}</b>
+                <span className="text-muted d-block">
+                  {`${filteredMessages.length} сообщений`}
                 </span>
               </p>
             </div>
