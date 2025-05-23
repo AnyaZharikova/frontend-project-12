@@ -1,3 +1,4 @@
+/* eslint-disable functional/no-expression-statement */
 import {
   BrowserRouter,
   Routes,
@@ -5,7 +6,7 @@ import {
   Navigate,
 } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import MainPage from './MainPage.jsx';
+import ChatPage from './ChatPage.jsx';
 import LoginPage from './LoginPage.jsx';
 import NotFound from './NotFound.jsx';
 import routes from '../routes.js';
@@ -23,7 +24,7 @@ const App = () => (
         path={routes.mainPage}
         element={(
           <PrivatRoute>
-            <MainPage />
+            <ChatPage />
           </PrivatRoute>
         )}
       />
