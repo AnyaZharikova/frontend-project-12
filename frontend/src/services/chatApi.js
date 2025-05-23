@@ -10,7 +10,8 @@ export const chatApi = createApi({
     baseUrl: apiPath,
     prepareHeaders: (headers, { getState }) => {
       const { token } = getState().auth;
-
+      console.log('prepareHeaders state:', getState());
+      console.log('Preparing headers with token:', token);
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }

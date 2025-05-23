@@ -19,6 +19,13 @@ const ChatPage = () => {
 
   const [activeChannelId, setActiveChannelId] = useState(null);
 
+  console.log('isLoadingChannels:', isLoadingChannels);
+  console.log('isLoadingMessages:', isLoadingMessages);
+  console.log('isErrorChannels:', isErrorChannels);
+  console.log('isErrorMessages:', isErrorMessages);
+  console.log('channels:', channels);
+  console.log('messages:', messages);
+
   if (isLoadingChannels || isLoadingMessages) {
     return <div className="text-center mt-5">Загрузка...</div>;
   }
