@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 import App from './Components/App.jsx';
-import store from './slices/index.js';
+import store from './services/index.js';
 import { setCredentials } from './slices/authSlice.js';
 
 const tokenFromStorage = localStorage.getItem('token');
