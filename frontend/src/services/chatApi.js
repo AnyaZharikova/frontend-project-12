@@ -10,8 +10,7 @@ export const chatApi = createApi({
     baseUrl: apiPath,
     prepareHeaders: (headers, { getState }) => {
       const { token } = getState().auth;
-      console.log('prepareHeaders state:', getState());
-      console.log('Preparing headers with token:', token);
+
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }
@@ -29,15 +28,21 @@ export const chatApi = createApi({
       query: () => '/messages',
       providesTags: ['Messages'],
     }),
+    addMessage: builder.mutation({
+      query: (message) => ({ url: '/messages', method: 'POST', body: message }),
+      invalidatesTags: ['Messages'],
+    }),
   }),
 });
 
 const {
   useGetChannelsQuery,
   useGetMessagesQuery,
+  useAddMessageMutation,
 } = chatApi;
 
 export {
   useGetChannelsQuery as getChannelsQuery,
   useGetMessagesQuery as getMessagesQuery,
+  useAddMessageMutation as addMessageMutation,
 };
