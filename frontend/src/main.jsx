@@ -8,21 +8,33 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 import App from './Components/App.jsx';
 import store from './services/index.js';
+import initSocket from './services/socket.js';
+import setupSocketHandlers from './services/socketHandlers.js';
 import { setCredentials } from './slices/authSlice.js';
 
-const tokenFromStorage = localStorage.getItem('token');
-const parsedToken = tokenFromStorage ? JSON.parse(tokenFromStorage) : null;
+const initApp = () => {
+  const tokenFromStorage = localStorage.getItem('token');
+  const usernameFromStorage = localStorage.getItem('username');
+  const parsedToken = tokenFromStorage ? JSON.parse(tokenFromStorage) : null;
+  const parsedUsername = usernameFromStorage ? JSON.parse(usernameFromStorage) : null;
 
-if (tokenFromStorage) {
-  store.dispatch(setCredentials({ token: parsedToken }));
-}
+  if (parsedUsername && parsedToken) {
+    store.dispatch(setCredentials({ username: parsedUsername, token: parsedToken }));
+  }
 
-const mountNode = document.getElementById('root');
-const root = ReactDOM.createRoot(mountNode);
-root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
-);
+  const socket = initSocket(parsedToken);
+
+  setupSocketHandlers(socket, store);
+
+  const mountNode = document.getElementById('root');
+  const root = ReactDOM.createRoot(mountNode);
+  root.render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </React.StrictMode>,
+  );
+};
+
+export default initApp;
