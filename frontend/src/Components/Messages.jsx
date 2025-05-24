@@ -1,8 +1,10 @@
+/* eslint-disable functional/no-conditional-statement */
+/* eslint-disable functional/no-expression-statement */
 import React from 'react';
-import { getMessagesQuery } from '../services/chatApi';
+import { useSelector } from 'react-redux';
 
 const Messages = ({ activeChannelId }) => {
-  const { data: messages = [] } = getMessagesQuery();
+  const messages = useSelector((state) => state.messages.messages);
   const filteredMessages = messages.filter((message) => message.channelId === activeChannelId);
 
   return (
@@ -10,8 +12,7 @@ const Messages = ({ activeChannelId }) => {
       {filteredMessages.map((message) => (
         <div key={message.id} className="text-break mb-2">
           <b>{message.username}</b>
-          `: `
-          {message.body}
+          {`: ${message.body}`}
         </div>
       ))}
     </div>
