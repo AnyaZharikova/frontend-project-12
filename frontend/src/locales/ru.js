@@ -53,6 +53,7 @@ export default {
       message: 'Ошибка добавления сообщения',
       unique: 'Должно быть уникальным',
       channelRemove: 'Ошибка удаления канала',
+      messageSendError: 'Не удалось отправить сообщение',
     },
     success: {
       registration: 'Регистрация прошла успешно!',
