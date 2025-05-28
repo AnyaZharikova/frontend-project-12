@@ -15,7 +15,7 @@ import MessageForm from './MessageForm.jsx';
 const Messages = () => {
   const { t } = useTranslation();
 
-  const { data: channels } = getChannelsQuery();
+  const { data: channels = [] } = getChannelsQuery();
   const {
     data: messages = [],
     isLoading,
