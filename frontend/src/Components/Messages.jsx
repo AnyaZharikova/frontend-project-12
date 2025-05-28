@@ -1,21 +1,89 @@
 /* eslint-disable functional/no-conditional-statement */
 /* eslint-disable functional/no-expression-statement */
+import {
+  Col,
+  Card,
+  Spinner,
+  Alert,
+} from 'react-bootstrap';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { getMessagesQuery, getChannelsQuery } from '../services/chatApi';
+import MessageForm from './MessageForm.jsx';
 
-const Messages = ({ activeChannelId }) => {
-  const messages = useSelector((state) => state.messages.messages);
-  const filteredMessages = messages.filter((message) => message.channelId === activeChannelId);
+const Messages = () => {
+  const { t } = useTranslation();
+
+  const {
+    data: channels,
+    isLoading: isChannelsLoading,
+    isError: isChannelsError,
+  } = getChannelsQuery();
+
+  const {
+    data: messages = [],
+    isLoading: isMessagesLoading,
+    isError: isMessagesError,
+  } = getMessagesQuery();
+
+  const activeChannelId = useSelector((state) => state.channelsReducer.activeChannelId);
+
+  if (isChannelsLoading || isMessagesLoading) {
+    return (
+      <Col className="col p-0 h-100 d-flex justify-content-center align-items-center">
+        <Spinner animation="border" variant="primary" />
+      </Col>
+    );
+  }
+
+  if (isChannelsError || isMessagesError) {
+    return (
+      <Col className="col p-0 h-100 d-flex justify-content-center align-items-center text-danger">
+        <Alert variant="danger">{t('errors.loadingError')}</Alert>
+      </Col>
+    );
+  }
+
+  const activeChannel = channels
+    .find((channel) => Number(channel.id) === Number(activeChannelId));
+  const filteredMessages = messages
+    .filter((message) => Number(message.channelId) === Number(activeChannelId));
+
+  if (!activeChannel) {
+    return (
+      <Col className="col p-0 h-100 d-flex justify-content-center align-items-center text-muted">
+        <Alert variant="secondary">{t('channelWarning')}</Alert>
+      </Col>
+    );
+  }
 
   return (
-    <div id="messages-box" className="chat-messages overflow-auto px-5">
-      {filteredMessages.map((message) => (
-        <div key={message.id} className="text-break mb-2">
-          <b>{message.username}</b>
-          {`: ${message.body}`}
+    <Col className="p-0 h-100">
+      <div className="d-flex flex-column h-100">
+        <Card className="bg-light mb-3 shadow-sm border-0 rounded-0">
+          <Card.Body className="py-2 px-3">
+            <Card.Title as="h6" className="mb-0">
+              {`# ${activeChannel.name}`}
+            </Card.Title>
+            <Card.Text className="text-muted mb-0 small">
+              {`${filteredMessages.length} сообщений`}
+            </Card.Text>
+          </Card.Body>
+        </Card>
+
+        <div id="messages-box" className="chat-messages overflow-auto px-4 mb-2">
+          {filteredMessages.map((msg) => (
+            <div key={msg.id} className="text-break mb-2">
+              <strong>{msg.username}</strong>
+              {`: ${msg.body}`}
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
+
+        <MessageForm />
+      </div>
+    </Col>
   );
 };
 
