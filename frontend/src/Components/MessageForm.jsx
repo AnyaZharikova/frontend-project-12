@@ -2,6 +2,7 @@
 /* eslint-disable functional/no-expression-statement */
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
+import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -10,9 +11,14 @@ import { messageSchema } from '../validation/validationSchema.js';
 
 const MessageForm = () => {
   const { t } = useTranslation();
-  const [addMessage] = addMessageMutation();
+  const inputRef = useRef();
   const username = useSelector((state) => state.authReducer.username);
   const activeChannelId = useSelector((state) => state.channelsReducer.activeChannelId);
+  const [addMessage] = addMessageMutation();
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const formik = useFormik({
     initialValues: { message: '' },
@@ -24,17 +30,21 @@ const MessageForm = () => {
           channelId: activeChannelId,
           username,
         };
-
+        if (!activeChannelId || !username) {
+          console.log('Не установлен activeChannelId или username:', { activeChannelId, username });
+          return;
+        }
         await addMessage(newMessage).unwrap();
         formik.resetForm();
       } catch (err) {
         toast.error(t('errors.messageSendError'));
       }
+      inputRef.current.focus();
     },
   });
 
   return (
-    <Form onSubmit={formik.handleSubmit} className="mt-auto px-5 py-3">
+    <Form onSubmit={formik.handleSubmit} noValidate className="mt-auto px-5 py-3">
       <InputGroup>
         <Form.Control
           name="message"
@@ -45,6 +55,7 @@ const MessageForm = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           isInvalid={formik.touched.message && !!formik.errors.message}
+          ref={inputRef}
         />
         <Button
           type="submit"
