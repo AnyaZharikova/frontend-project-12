@@ -7,4 +7,5 @@ export default {
   registerPage: '/signup',
   registerPath: `${apiPath}/signup`,
   chatPage: '/chat',
+  channelsPath: `${apiPath}/channels`,
 };
