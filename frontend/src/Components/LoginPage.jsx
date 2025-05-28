@@ -2,29 +2,30 @@
 /* eslint-disable functional/no-conditional-statement */
 /* eslint-disable functional/no-try-statement */
 /* eslint-disable functional/no-expression-statement */
-import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import {
-  Button,
-  Form,
   Container,
   Row,
   Col,
-  Card,
 } from 'react-bootstrap';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import routes from '../routes.js';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { setCredentials } from '../slices/authSlice.js';
+import { loginUserMutation } from '../services/chatApi.js';
+import LoginCard from './LoginCard.jsx';
+import { loginSchema } from '../validation/validationSchema.js';
+import routes from '../routes.js';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
-
+  const [loginUser] = loginUserMutation();
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
-  const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -35,96 +36,56 @@ const LoginPage = () => {
       username: '',
       password: '',
     },
+    validationSchema: loginSchema(t('errors.required')),
     onSubmit: async (values) => {
       setAuthFailed(false);
 
       try {
-        const response = await axios.post(routes.loginPath, values);
-        console.log('response.data:', response.data); // If the token is not there, the problem is in the API or in the request.
+        const response = await loginUser(values);
         const { username, token } = response.data;
         // save to redux
         dispatch(setCredentials({ username, token }));
+
         // save token to localStorage
         if (token && typeof token === 'string') {
+          localStorage.setItem('username', JSON.stringify(username));
           localStorage.setItem('token', JSON.stringify(token)); // localStorage stores only strings
         } else {
           throw new Error('Token is missing or of the wrong type');
         }
 
-        const from = location.state?.from?.pathname || '/';
-        navigate(from);
+        navigate(routes.chatPage);
       } catch (err) {
         formik.setSubmitting(false);
-        if (err.isAxiosError && err.response.status === 401) {
+
+        if (err?.status === 401) {
           setAuthFailed(true);
           inputRef.current.select();
-          return;
+        } else {
+          toast.error(t('errors.network'));
         }
-        throw err;
       }
     },
   });
+
+  const values = {
+    formik,
+    title: t('entry'),
+    placeholderName: t('placeholders.login'),
+    placeholderPassword: t('placeholders.password'),
+    noAccount: t('noAccount'),
+    registration: t('makeRegistration'),
+    error: t('errors.invalidFeedback'),
+    path: routes.registerPage,
+    authFailed,
+    inputRef,
+  };
 
   return (
     <Container className="mt-5">
       <Row className="justify-content-center">
         <Col md={8} lg={6}>
-          <Card className="shadow-sm">
-            <Card.Body className="p-lg-5">
-              <h1 className="mb-4">Вход</h1>
-
-              <Form onSubmit={formik.handleSubmit}>
-                <Form.Group className="mb-3">
-                  <Form.Label htmlFor="username">Логин</Form.Label>
-                  <Form.Control
-                    id="username"
-                    name="username"
-                    type="text"
-                    ref={inputRef}
-                    required
-                    onChange={formik.handleChange}
-                    value={formik.values.username}
-                    isInvalid={authFailed}
-                    disabled={formik.isSubmitting}
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label htmlFor="password">Пароль</Form.Label>
-                  <Form.Control
-                    id="password"
-                    name="password"
-                    type="password"
-                    required
-                    onChange={formik.handleChange}
-                    value={formik.values.password}
-                    isInvalid={authFailed}
-                    disabled={formik.isSubmitting}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Неверные данные для входа
-                  </Form.Control.Feedback>
-                </Form.Group>
-
-                <div className="d-grid">
-                  <Button
-                    variant="primary"
-                    type="submit"
-                    disabled={formik.isSubmitting}
-                  >
-                    Войти
-                  </Button>
-                </div>
-              </Form>
-            </Card.Body>
-
-            <Card.Footer className="text-center py-4">
-              <div>
-                <span className="text-muted">Ещё нет аккаунта? </span>
-                <Link to="/register">Зарегистрироваться</Link>
-              </div>
-            </Card.Footer>
-          </Card>
+          <LoginCard values={values} />
         </Col>
       </Row>
     </Container>
