@@ -25,18 +25,20 @@ const MessageForm = () => {
     validationSchema: messageSchema(t('errors.required')),
     onSubmit: async (values) => {
       try {
+        console.log('Отправка сообщения...', { activeChannelId, username });
         const newMessage = {
           body: values.message,
           channelId: activeChannelId,
           username,
         };
-        if (!activeChannelId || !username) {
-          console.log('Не установлен activeChannelId или username:', { activeChannelId, username });
-          return;
-        }
-        await addMessage(newMessage).unwrap();
+        console.log('Данные сообщения:', newMessage);
+
+        const result = await addMessage(newMessage).unwrap();
+        console.log('Ответ сервера:', result);
+        // await addMessage(newMessage).unwrap();
         formik.resetForm();
       } catch (err) {
+        console.error('Ошибка отправки:', err);
         toast.error(t('errors.messageSendError'));
       }
       inputRef.current.focus();
