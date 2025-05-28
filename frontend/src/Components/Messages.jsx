@@ -15,21 +15,20 @@ import MessageForm from './MessageForm.jsx';
 const Messages = () => {
   const { t } = useTranslation();
 
-  const {
-    data: channels,
-    isLoading: isChannelsLoading,
-    isError: isChannelsError,
-  } = getChannelsQuery();
-
+  const { data: channels } = getChannelsQuery();
   const {
     data: messages = [],
-    isLoading: isMessagesLoading,
-    isError: isMessagesError,
+    isLoading,
+    isError,
   } = getMessagesQuery();
 
   const activeChannelId = useSelector((state) => state.channelsReducer.activeChannelId);
+  const activeChannel = channels
+    .find((channel) => Number(channel.id) === Number(activeChannelId));
+  const filteredMessages = messages
+    .filter((message) => Number(message.channelId) === Number(activeChannelId));
 
-  if (isChannelsLoading || isMessagesLoading) {
+  if (isLoading) {
     return (
       <Col className="col p-0 h-100 d-flex justify-content-center align-items-center">
         <Spinner animation="border" variant="primary" />
@@ -37,18 +36,13 @@ const Messages = () => {
     );
   }
 
-  if (isChannelsError || isMessagesError) {
+  if (isError) {
     return (
       <Col className="col p-0 h-100 d-flex justify-content-center align-items-center text-danger">
         <Alert variant="danger">{t('errors.loadingError')}</Alert>
       </Col>
     );
   }
-
-  const activeChannel = channels
-    .find((channel) => Number(channel.id) === Number(activeChannelId));
-  const filteredMessages = messages
-    .filter((message) => Number(message.channelId) === Number(activeChannelId));
 
   if (!activeChannel) {
     return (

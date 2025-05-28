@@ -7,6 +7,8 @@ import {
   Button,
   ButtonGroup,
   Dropdown,
+  Alert,
+  Spinner,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { getChannelsQuery } from '../services/chatApi';
@@ -17,7 +19,12 @@ import getModalComponent from './modal/index.js';
 const Channels = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { data: channels = [] } = getChannelsQuery();
+
+  const {
+    data: channels,
+    isLoading,
+    isError,
+  } = getChannelsQuery();
   const activeChannelId = useSelector((state) => state.channelsReducer.activeChannelId);
   const modalType = useSelector((state) => state.modalsReducer.modals.modalType);
 
@@ -32,6 +39,22 @@ const Channels = () => {
     const ModalComponent = getModalComponent(modalType);
     return <ModalComponent />;
   };
+
+  if (isLoading) {
+    return (
+      <Col className="col p-0 h-100 d-flex justify-content-center align-items-center">
+        <Spinner animation="border" variant="primary" />
+      </Col>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Col className="col p-0 h-100 d-flex justify-content-center align-items-center text-danger">
+        <Alert variant="danger">{t('errors.loadingError')}</Alert>
+      </Col>
+    );
+  }
 
   return (
     <Col xs={4} md={2} className="border-end px-0 bg-light">
