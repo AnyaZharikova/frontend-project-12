@@ -16,6 +16,7 @@ export default {
     haveAccount: 'Уже есть аккаунт?',
     notFoundPage: 'Страница не найдена',
     channels: 'Каналы',
+    channelWarning: 'Выберите канал',
     messagesCount: {
       message_zero: 'Нет сообщений',
       message_one: '{{count}} сообщение',
@@ -54,6 +55,7 @@ export default {
       unique: 'Должно быть уникальным',
       channelRemove: 'Ошибка удаления канала',
       messageSendError: 'Не удалось отправить сообщение',
+      loadingError: 'Ошибка загрузки',
     },
     success: {
       registration: 'Регистрация прошла успешно!',
