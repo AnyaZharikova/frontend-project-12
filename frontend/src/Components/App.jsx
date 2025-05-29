@@ -24,11 +24,6 @@ const rollbarConfig = {
   environment: 'testenv',
 };
 
-function TestError() {
-  const a = null;
-  return a.hello();
-}
-
 const PrivatRoute = ({ children }) => {
   const token = useSelector((state) => state.authReducer.token);
   console.log('PrivatRoute token:', token);
@@ -66,7 +61,6 @@ const App = () => {
             <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
           </div>
         </BrowserRouter>
-        <TestError />
       </ErrorBoundary>
     </Provider>
   );
