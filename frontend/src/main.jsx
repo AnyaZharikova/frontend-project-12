@@ -7,6 +7,7 @@ import { initReactI18next } from 'react-i18next';
 import { Provider } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import leoProfanity from 'leo-profanity';
 
 import App from './Components/App.jsx';
 import setupSocketHandlers from './services/socketHandlers.js';
@@ -14,6 +15,10 @@ import store from './services/index.js';
 import initSocket from './services/socket.js';
 import resources from './locales/index.js';
 import { setCredentials } from './slices/authSlice.js';
+
+leoProfanity.clearList();
+leoProfanity.add(leoProfanity.getDictionary('ru'));
+leoProfanity.list();
 
 const initApp = () => {
   const i18n = i18next.createInstance();
@@ -24,16 +29,14 @@ const initApp = () => {
       fallbackLng: 'ru',
     });
 
-  const tokenFromStorage = localStorage.getItem('token');
-  const usernameFromStorage = localStorage.getItem('username');
-  const parsedToken = tokenFromStorage ? JSON.parse(tokenFromStorage) : null;
-  const parsedUsername = usernameFromStorage ? JSON.parse(usernameFromStorage) : null;
+  const token = localStorage.getItem('token');
+  const username = localStorage.getItem('username');
 
-  if (parsedUsername && parsedToken) {
-    store.dispatch(setCredentials({ username: parsedUsername, token: parsedToken }));
+  if (username && token) {
+    store.dispatch(setCredentials({ username, token }));
   }
 
-  const socket = initSocket(parsedToken);
+  const socket = initSocket(token);
 
   setupSocketHandlers(socket, store);
 

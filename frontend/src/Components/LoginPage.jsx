@@ -47,12 +47,8 @@ const LoginPage = () => {
         dispatch(setCredentials({ username, token }));
 
         // save token to localStorage
-        if (token && typeof token === 'string') {
-          localStorage.setItem('username', JSON.stringify(username));
-          localStorage.setItem('token', JSON.stringify(token)); // localStorage stores only strings
-        } else {
-          throw new Error('Token is missing or of the wrong type');
-        }
+        localStorage.setItem('username', username);
+        localStorage.setItem('token', token); // localStorage stores only strings
 
         navigate(routes.chatPage);
       } catch (err) {

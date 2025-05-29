@@ -8,15 +8,18 @@ import {
 } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useRef, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
 import { registrationSchema } from '../validation/validationSchema.js';
 import { signupUserMutation } from '../services/chatApi.js';
+import { setCredentials } from '../slices/authSlice.js';
 import RegisterCard from './RegisterCard.jsx';
 import routes from '../routes.js';
 
 const RegisterPage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [signupUser] = signupUserMutation();
   const [registerFailed, setRegisterFailed] = useState(false);
@@ -42,6 +45,9 @@ const RegisterPage = () => {
           username: values.username,
           password: values.password,
         }).unwrap();
+
+        const { username, token } = response;
+        dispatch(setCredentials({ username, token }));
 
         localStorage.setItem('token', response.token);
         localStorage.setItem('username', response.username);
