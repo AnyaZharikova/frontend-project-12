@@ -6,6 +6,7 @@ import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import leoProfanity from 'leo-profanity';
 import { addMessageMutation } from '../services/chatApi';
 import { messageSchema } from '../validation/validationSchema.js';
 
@@ -21,21 +22,19 @@ const MessageForm = () => {
   }, []);
 
   const formik = useFormik({
-    initialValues: { message: '' },
+    initialValues: { body: '' },
     validationSchema: messageSchema(t('errors.required')),
     onSubmit: async (values) => {
-      try {
-        console.log('Отправка сообщения...', { activeChannelId, username });
-        const newMessage = {
-          body: values.message,
-          channelId: activeChannelId,
-          username,
-        };
-        console.log('Данные сообщения:', newMessage);
+      const { body } = values;
+      const censorBody = leoProfanity.clean(body);
+      const newMessage = {
+        body: censorBody,
+        channelId: activeChannelId,
+        username,
+      };
 
-        const result = await addMessage(newMessage).unwrap();
-        console.log('Ответ сервера:', result);
-        // await addMessage(newMessage).unwrap();
+      try {
+        await addMessage(newMessage).unwrap();
         formik.resetForm();
       } catch (err) {
         console.error('Ошибка отправки:', err);
@@ -49,28 +48,23 @@ const MessageForm = () => {
     <Form onSubmit={formik.handleSubmit} noValidate className="mt-auto px-5 py-3">
       <InputGroup>
         <Form.Control
-          name="message"
+          name="body"
           aria-label={t('messageAriaLabel')}
           placeholder={t('placeholders.newMessage')}
           className="border-0 p-0 ps-2"
-          value={formik.values.message}
+          value={formik.values.body}
           onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          isInvalid={formik.touched.message && !!formik.errors.message}
           ref={inputRef}
         />
         <Button
           type="submit"
           variant="outline-primary"
           aria-label={t('sendMessageLabel')}
-          disabled={!formik.values.message.trim()}
+          disabled={!formik.values.body}
         >
           <i className="bi bi-arrow-return-left" />
         </Button>
       </InputGroup>
-      <Form.Control.Feedback type="invalid">
-        {formik.errors.message}
-      </Form.Control.Feedback>
     </Form>
   );
 };

@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import leoProfanity from 'leo-profanity';
 import { getChannelsQuery } from '../../services/chatApi.js';
 import { newChannelSchema } from '../../validation/validationSchema.js';
 import ModalInput from './ModalInput.jsx';
@@ -22,9 +23,10 @@ const AddChannel = () => {
     validationSchema: newChannelSchema(channels, t('errors.channelExist'), t('registrationRules.name')),
     onSubmit: async (values) => {
       try {
-        const newChannel = { name: values.channelName };
+        const censoredChannelName = leoProfanity.clean(values.channelName);
+        const newChannel = { name: censoredChannelName };
 
-        const token = JSON.parse(localStorage.getItem('token'));
+        const token = localStorage.getItem('token');
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
         const response = await axios.post(routes.channelsPath, newChannel, { headers });
