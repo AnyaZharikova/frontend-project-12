@@ -1,11 +1,11 @@
 install:
-	npm ci
+	npm ci && make -C frontend install
 
 lint:
-	npx eslint .
+	make -C frontend lint
 
 start:
 	npx start-server -s ./frontend/dist
 
 build:
-	npm run build
+	make -C frontend build
