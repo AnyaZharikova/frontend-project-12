@@ -35,7 +35,7 @@ const LoginCard = (props) => {
     type: 'password',
     placeholder: placeholderPassword,
     failed: authFailed,
-    inputRef,
+    inputRef: null,
     error,
   };
 
