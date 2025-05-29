@@ -20,15 +20,8 @@ const setupSocketHandlers = (socket, store) => {
     );
   });
 
-  socket.on('renameChannel', (updatedChannel) => {
-    store.dispatch(
-      chatApi.util.updateQueryData('editChannel', undefined, (draft) => {
-        const index = draft.findIndex((ch) => ch.id === updatedChannel.id);
-        if (index !== -1) {
-          draft[index].name = updatedChannel.name;
-        }
-      }),
-    );
+  socket.on('renameChannel', () => {
+    store.dispatch(chatApi.util.invalidateTags(['Channels']));
   });
 
   socket.on('removeChannel', (channelId) => {
