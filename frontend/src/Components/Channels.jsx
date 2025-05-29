@@ -67,6 +67,7 @@ const Channels = () => {
           aria-label={t('modals.addChannel')}
           onClick={() => dispatch(openModal({ type: 'add', targetId: null }))}
         >
+          <span className="visually-hidden">+</span>
           <i className="bi bi-plus-square" />
         </Button>
       </div>
