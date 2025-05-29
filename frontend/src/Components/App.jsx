@@ -6,10 +6,10 @@ import {
   Link,
   Navigate,
 } from 'react-router-dom';
-import { Navbar, Container } from 'react-bootstrap';
+import { Navbar, Container, Button } from 'react-bootstrap';
 import React from 'react';
 import { Provider, ErrorBoundary } from '@rollbar/react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,6 +17,7 @@ import ChatPage from './ChatPage.jsx';
 import LoginPage from './LoginPage.jsx';
 import RegisterPage from './RegisterPage.jsx';
 import NotFound from './NotFound.jsx';
+import { logOut } from '../slices/authSlice.js';
 import routes from '../routes.js';
 
 const rollbarConfig = {
@@ -26,8 +27,20 @@ const rollbarConfig = {
 
 const PrivatRoute = ({ children }) => {
   const token = useSelector((state) => state.authReducer.token);
-  console.log('PrivatRoute token:', token);
+
   return token ? children : <Navigate to="/login" replace />;
+};
+
+const ExitButton = () => {
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const token = useSelector((state) => state.authReducer.token);
+
+  const handleClick = () => {
+    dispatch(logOut());
+  };
+
+  return token ? <Button type="button" onClick={handleClick}>{t('exit')}</Button> : '';
 };
 
 const App = () => {
@@ -41,6 +54,7 @@ const App = () => {
             <Navbar expand="lg" variant="light" bg="white" className="shadow-sm">
               <Container>
                 <Navbar.Brand as={Link} to={routes.chatPage}>{t('name')}</Navbar.Brand>
+                <ExitButton />
               </Container>
             </Navbar>
             <Routes>
