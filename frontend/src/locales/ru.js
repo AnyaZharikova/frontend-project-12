@@ -1,13 +1,13 @@
 export default {
   translation: {
     placeholders: {
-      login: 'Логин',
+      login: 'Ваш ник',
       username: 'Имя пользователя',
       password: 'Пароль',
       passwordConfirmation: 'Подтвердите пароль',
       newMessage: 'Введите новое сообщение...',
     },
-    name: 'Чат',
+    name: 'Hexlet Chat',
     registration: 'Регистрация',
     makeRegistration: 'Зарегистрироваться',
     entry: 'Войти',
@@ -38,6 +38,7 @@ export default {
       unique: 'Должно быть уникальным',
       toggle: 'Управление каналом',
       submitButton: 'Отправить',
+      channelName: 'Имя канала',
       addChannel: 'Добавить канал',
       rename: 'Переименовать',
       remove: 'Удалить',
