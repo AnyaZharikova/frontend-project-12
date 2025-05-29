@@ -41,8 +41,8 @@ const LoginPage = () => {
       setAuthFailed(false);
 
       try {
-        const response = await loginUser(values);
-        const { username, token } = response.data;
+        const response = await loginUser(values).unwrap();
+        const { username, token } = response;
         // save to redux
         dispatch(setCredentials({ username, token }));
 
