@@ -1,8 +1,10 @@
 /* eslint-disable functional/no-expression-statement */
 import React, { useRef, useEffect } from 'react';
 import { Form, Modal, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 const ModalInput = (props) => {
+  const { t } = useTranslation();
   const inputModalRef = useRef();
   const { values } = props;
   const {
@@ -27,6 +29,7 @@ const ModalInput = (props) => {
       <Modal.Body>
         <Modal.Body>
           <Form onSubmit={formik.handleSubmit}>
+            <Form.Label className="visually-hidden" htmlFor="">{t('modals.channelName')}</Form.Label>
             <Form.Control
               name={field}
               value={formik.values[field]}
