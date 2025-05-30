@@ -1,11 +1,10 @@
-export const apiPath = '/api/v1';
+export const apiPath = '/api/v1'
 
 export default {
-  mainPage: '/',
-  loginPage: '/login',
-  loginPath: `${apiPath}/login`,
-  registerPage: '/signup',
-  registerPath: `${apiPath}/signup`,
-  chatPage: '/chat',
-  channelsPath: `${apiPath}/channels`,
-};
+  loginPath: () => '/login',
+  registerPath: () => '/signup',
+  chatPath: () => '/chat',
+  channelsPath: () => '/channels',
+  channelPath: id => `/channels/${id}`,
+  messagesPath: () => '/messages',
+}
