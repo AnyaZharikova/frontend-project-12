@@ -43,16 +43,17 @@ const ModalInput = (props) => {
           <Form.Control.Feedback type="invalid">
             {formik.errors.channelName}
           </Form.Control.Feedback>
+
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              {cancelButton}
+            </Button>
+            <Button variant="primary" type="submit" disabled={formik.isSubmitting}>
+              {submitButton}
+            </Button>
+          </Modal.Footer>
         </Form>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          {cancelButton}
-        </Button>
-        <Button variant="primary" type="submit" disabled={formik.isSubmitting}>
-          {submitButton}
-        </Button>
-      </Modal.Footer>
     </Modal>
   )
 }
