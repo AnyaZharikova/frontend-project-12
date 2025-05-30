@@ -1,4 +1,5 @@
 import { useFormik } from 'formik'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
@@ -7,7 +8,7 @@ import { getChannelsQuery, addChannelMutation } from '../../services/chatApi.js'
 import { newChannelSchema } from '../../validation/validationSchema.js'
 import { closeModal } from '../../slices/modalsSlice'
 import ModalInput from './ModalInput.jsx'
-import { useEffect } from 'react'
+import { setActiveChannel } from '../../slices/channelsSlice.js'
 
 const AddChannel = () => {
   const { t } = useTranslation()
@@ -24,7 +25,8 @@ const AddChannel = () => {
       const newChannel = { name: censoredChannelName }
 
       try {
-        await addChannel(newChannel).unwrap()
+        const response = await addChannel(newChannel).unwrap()
+        dispatch(setActiveChannel(response.id))
         dispatch(closeModal())
         toast.success(t('success.newChannel'))
       }
