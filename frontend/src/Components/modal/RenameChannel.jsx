@@ -2,6 +2,7 @@ import { useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
+import leoProfanity from 'leo-profanity'
 import { getChannelsQuery, editChannelMutation } from '../../services/chatApi.js'
 import { newChannelSchema } from '../../validation/validationSchema.js'
 import ModalInput from './ModalInput.jsx'
@@ -21,8 +22,9 @@ const RenameChannel = () => {
     initialValues: { channelName: currentChannel.name },
     validationSchema: newChannelSchema(channels, t('errors.unique'), t('modals.length')),
     onSubmit: async (values) => {
+      const censoredChannelName = leoProfanity.clean(values.channelName)
       try {
-        await editChannel({ id: currentChannel.id, name: values.channelName }).unwrap()
+        await editChannel({ id: currentChannel.id, name: censoredChannelName }).unwrap()
         dispatch(closeModal())
         toast.success(t('success.renameChannel'))
       }
