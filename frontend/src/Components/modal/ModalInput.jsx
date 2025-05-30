@@ -27,12 +27,13 @@ const ModalInput = (props) => {
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
-          <Form.Label className="visually-hidden" htmlFor="">{t('modals.channelName')}</Form.Label>
+          <Form.Label className="visually-hidden" htmlFor="channelName">{t('modals.channelName')}</Form.Label>
           <Form.Control
             id="channelName"
             name="channelName"
-            value={formik.values.channelName}
+            placeholder={t('modals.channelName')}
             type="text"
+            value={formik.values.channelName}
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
             isInvalid={formik.errors.channelName && formik.touched.channelName}
