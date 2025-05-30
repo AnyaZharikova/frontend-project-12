@@ -1,34 +1,31 @@
-/* eslint-disable functional/no-conditional-statement */
-/* eslint-disable functional/no-try-statement */
-/* eslint-disable functional/no-expression-statement */
 import {
   Container,
   Row,
   Col,
-} from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import React, { useState, useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import { useFormik } from 'formik';
-import { registrationSchema } from '../validation/validationSchema.js';
-import { signupUserMutation } from '../services/chatApi.js';
-import { setCredentials } from '../slices/authSlice.js';
-import RegisterCard from './RegisterCard.jsx';
-import routes from '../routes.js';
+} from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
+import { useState, useRef, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import { useFormik } from 'formik'
+import { registrationSchema } from '../validation/validationSchema.js'
+import { signupUserMutation } from '../services/chatApi.js'
+import { setCredentials } from '../slices/authSlice.js'
+import RegisterCard from './RegisterCard.jsx'
+import routes from '../routes.js'
 
 const RegisterPage = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [signupUser] = signupUserMutation();
-  const [registerFailed, setRegisterFailed] = useState(false);
-  const inputRef = useRef();
-  const { t } = useTranslation();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [signupUser] = signupUserMutation()
+  const [registerFailed, setRegisterFailed] = useState(false)
+  const inputRef = useRef()
+  const { t } = useTranslation()
 
   useEffect(() => {
-    inputRef.current.focus();
-  }, []);
+    inputRef.current.focus()
+  }, [])
 
   const formik = useFormik({
     initialValues: {
@@ -44,29 +41,32 @@ const RegisterPage = () => {
         const response = await signupUser({
           username: values.username,
           password: values.password,
-        }).unwrap();
+        }).unwrap()
 
-        const { username, token } = response;
-        dispatch(setCredentials({ username, token }));
+        const { username, token } = response
+        dispatch(setCredentials({ username, token }))
 
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('username', response.username);
+        localStorage.setItem('token', response.token)
+        localStorage.setItem('username', response.username)
 
-        toast.success(t('success.registration'));
-        setRegisterFailed(false);
-        navigate('/chat');
-      } catch (err) {
+        toast.success(t('success.registration'))
+        setRegisterFailed(false)
+        navigate(routes.channelPath())
+      }
+      catch (err) {
         if (err.status === 409) {
-          toast.error(t('errors.userExists'));
-          setRegisterFailed(true);
-        } else if (err.status) {
-          toast.error(t('errors.serverError'));
-        } else {
-          toast(t('errors.network'));
+          toast.error(t('errors.userExists'))
+          setRegisterFailed(true)
+        }
+        else if (err.status) {
+          toast.error(t('errors.serverError'))
+        }
+        else {
+          toast(t('errors.network'))
         }
       }
     },
-  });
+  })
 
   const values = {
     formik,
@@ -77,10 +77,10 @@ const RegisterPage = () => {
     userExists: t('errors.userExists'),
     haveAccount: t('haveAccount'),
     login: t('entry'),
-    path: routes.loginPage,
+    path: routes.loginPath(),
     registerFailed,
     inputRef,
-  };
+  }
 
   return (
     <Container className="mt-5">
@@ -90,7 +90,7 @@ const RegisterPage = () => {
         </Col>
       </Row>
     </Container>
-  );
-};
+  )
+}
 
-export default RegisterPage;
+export default RegisterPage

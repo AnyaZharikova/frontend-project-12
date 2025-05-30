@@ -1,12 +1,11 @@
-/* eslint-disable functional/no-expression-statement */
-import React, { useRef, useEffect } from 'react';
-import { Form, Modal, Button } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
+import { useRef, useEffect } from 'react'
+import { Form, Modal, Button } from 'react-bootstrap'
+import { useTranslation } from 'react-i18next'
 
 const ModalInput = (props) => {
-  const { t } = useTranslation();
-  const inputModalRef = useRef();
-  const { values } = props;
+  const { t } = useTranslation()
+  const inputModalRef = useRef()
+  const { values } = props
   const {
     isShown,
     formik,
@@ -15,11 +14,11 @@ const ModalInput = (props) => {
     handleClose,
     cancelButton,
     submitButton,
-  } = values;
+  } = values
 
   useEffect(() => {
-    inputModalRef.current.focus();
-  }, []);
+    inputModalRef.current.focus()
+  }, [])
 
   return (
     <Modal show={isShown} centered>
@@ -55,7 +54,7 @@ const ModalInput = (props) => {
         </Modal.Body>
       </Modal.Body>
     </Modal>
-  );
-};
+  )
+}
 
-export default ModalInput;
+export default ModalInput

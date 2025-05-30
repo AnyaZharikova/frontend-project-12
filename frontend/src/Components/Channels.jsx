@@ -1,7 +1,4 @@
-/* eslint-disable functional/no-conditional-statement */
-/* eslint-disable functional/no-expression-statement */
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Col,
   Button,
@@ -9,43 +6,43 @@ import {
   Dropdown,
   Alert,
   Spinner,
-} from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
-import { getChannelsQuery } from '../services/chatApi';
-import { setActiveChannel } from '../slices/channelsSlice.js';
-import { openModal } from '../slices/modalsSlice.js';
-import getModalComponent from './modal/index.js';
+} from 'react-bootstrap'
+import { useTranslation } from 'react-i18next'
+import { getChannelsQuery } from '../services/chatApi'
+import { setActiveChannel } from '../slices/channelsSlice.js'
+import { openModal } from '../slices/modalsSlice.js'
+import getModalComponent from './modal/index.js'
 
 const Channels = () => {
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
+  const dispatch = useDispatch()
+  const { t } = useTranslation()
 
   const {
     data: channels,
     isLoading,
     isError,
-  } = getChannelsQuery();
-  const activeChannelId = useSelector((state) => state.channelsReducer.activeChannelId);
-  const modalType = useSelector((state) => state.modalsReducer.modals.modalType);
+  } = getChannelsQuery()
+  const activeChannelId = useSelector(state => state.channelsReducer.activeChannelId)
+  const modalType = useSelector(state => state.modalsReducer.modals.modalType)
 
   const handleClick = (channelId) => {
-    dispatch(setActiveChannel(channelId));
-  };
+    dispatch(setActiveChannel(channelId))
+  }
 
   const renderModal = () => {
     if (modalType === '') {
-      return null;
+      return null
     }
-    const ModalComponent = getModalComponent(modalType);
-    return <ModalComponent />;
-  };
+    const ModalComponent = getModalComponent(modalType)
+    return <ModalComponent />
+  }
 
   if (isLoading) {
     return (
       <Col className="col p-0 h-100 d-flex justify-content-center align-items-center">
         <Spinner animation="border" variant="primary" />
       </Col>
-    );
+    )
   }
 
   if (isError) {
@@ -53,7 +50,7 @@ const Channels = () => {
       <Col className="col p-0 h-100 d-flex justify-content-center align-items-center text-danger">
         <Alert variant="danger">{t('errors.loadingError')}</Alert>
       </Col>
-    );
+    )
   }
 
   return (
@@ -72,7 +69,7 @@ const Channels = () => {
         </Button>
       </div>
       <ul id="channels-id" className="nav flex-column nav-pills nav-fill px-2">
-        {channels.map((channel) => (
+        {channels.map(channel => (
           <li key={channel.id} className="nav-item w-100">
             <ButtonGroup className="d-flex show dropdown">
               <Button
@@ -102,7 +99,7 @@ const Channels = () => {
       </ul>
       { renderModal() }
     </Col>
-  );
-};
+  )
+}
 
-export default Channels;
+export default Channels

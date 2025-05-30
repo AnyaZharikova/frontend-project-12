@@ -1,32 +1,31 @@
-/* eslint-disable functional/no-expression-statement */
-/* eslint-disable functional/no-try-statement */
-import { Modal, Button } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import { getChannelsQuery, removeChannelMutation } from '../../services/chatApi.js';
-import { closeModal } from '../../slices/modalsSlice';
+import { Modal, Button } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import { getChannelsQuery, removeChannelMutation } from '../../services/chatApi.js'
+import { closeModal } from '../../slices/modalsSlice'
 
 const RenameChannel = () => {
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const isShown = useSelector((state) => state.modalsReducer.modals.isShown);
-  const targetId = useSelector((state) => state.modalsReducer.modals.targetId);
-  const { data: channels = [] } = getChannelsQuery();
-  const [removeChannel] = removeChannelMutation();
-  const currentChannel = channels.find((channel) => channel.id === targetId);
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const isShown = useSelector(state => state.modalsReducer.modals.isShown)
+  const targetId = useSelector(state => state.modalsReducer.modals.targetId)
+  const { data: channels = [] } = getChannelsQuery()
+  const [removeChannel] = removeChannelMutation()
+  const currentChannel = channels.find(channel => channel.id === targetId)
 
-  const handleClose = () => dispatch(closeModal());
+  const handleClose = () => dispatch(closeModal())
 
   const handleRemove = async () => {
     try {
-      await removeChannel(currentChannel.id).unwrap();
-      dispatch(closeModal());
-      toast.success(t('success.removeChannel'));
-    } catch (err) {
-      toast.error(t('errors.channelRemove'));
+      await removeChannel(currentChannel.id).unwrap()
+      dispatch(closeModal())
+      toast.success(t('success.removeChannel'))
     }
-  };
+    catch {
+      toast.error(t('errors.channelRemove'))
+    }
+  }
 
   return (
     <Modal show={isShown} centered>
@@ -45,7 +44,7 @@ const RenameChannel = () => {
         </div>
       </Modal.Body>
     </Modal>
-  );
-};
+  )
+}
 
-export default RenameChannel;
+export default RenameChannel

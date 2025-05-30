@@ -1,35 +1,31 @@
-/* eslint-disable functional/no-throw-statement */
-/* eslint-disable functional/no-conditional-statement */
-/* eslint-disable functional/no-try-statement */
-/* eslint-disable functional/no-expression-statement */
-import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useFormik } from 'formik';
+import { useEffect, useRef, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useFormik } from 'formik'
 import {
   Container,
   Row,
   Col,
-} from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import { setCredentials } from '../slices/authSlice.js';
-import { loginUserMutation } from '../services/chatApi.js';
-import LoginCard from './LoginCard.jsx';
-import { loginSchema } from '../validation/validationSchema.js';
-import routes from '../routes.js';
+} from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import { setCredentials } from '../slices/authSlice.js'
+import { loginUserMutation } from '../services/chatApi.js'
+import LoginCard from './LoginCard.jsx'
+import { loginSchema } from '../validation/validationSchema.js'
+import routes from '../routes.js'
 
 const LoginPage = () => {
-  const dispatch = useDispatch();
-  const [loginUser] = loginUserMutation();
-  const [authFailed, setAuthFailed] = useState(false);
-  const inputRef = useRef();
-  const navigate = useNavigate();
-  const { t } = useTranslation();
+  const dispatch = useDispatch()
+  const [loginUser] = loginUserMutation()
+  const [authFailed, setAuthFailed] = useState(false)
+  const inputRef = useRef()
+  const navigate = useNavigate()
+  const { t } = useTranslation()
 
   useEffect(() => {
-    inputRef.current.focus();
-  }, []);
+    inputRef.current.focus()
+  }, [])
 
   const formik = useFormik({
     initialValues: {
@@ -38,31 +34,33 @@ const LoginPage = () => {
     },
     validationSchema: loginSchema(t('errors.required')),
     onSubmit: async (values) => {
-      setAuthFailed(false);
+      setAuthFailed(false)
 
       try {
-        const response = await loginUser(values).unwrap();
-        const { username, token } = response;
+        const response = await loginUser(values).unwrap()
+        const { username, token } = response
         // save to redux
-        dispatch(setCredentials({ username, token }));
+        dispatch(setCredentials({ username, token }))
 
         // save token to localStorage
-        localStorage.setItem('username', username);
-        localStorage.setItem('token', token); // localStorage stores only strings
-
-        navigate(routes.chatPage);
-      } catch (err) {
-        formik.setSubmitting(false);
-
+        localStorage.setItem('username', username)
+        localStorage.setItem('token', token) // localStorage stores only strings
+        console.log('Login response:', response)
+        navigate(routes.chatPath())
+      }
+      catch (err) {
+        formik.setSubmitting(false)
+        console.log(err)
         if (err?.status === 401) {
-          setAuthFailed(true);
-          inputRef.current.select();
-        } else {
-          toast.error(t('errors.network'));
+          setAuthFailed(true)
+          inputRef.current.select()
+        }
+        else {
+          toast.error(t('errors.network'))
         }
       }
     },
-  });
+  })
 
   const values = {
     formik,
@@ -72,10 +70,10 @@ const LoginPage = () => {
     noAccount: t('noAccount'),
     registration: t('makeRegistration'),
     error: t('errors.invalidFeedback'),
-    path: routes.registerPage,
+    path: routes.registerPath(),
     authFailed,
     inputRef,
-  };
+  }
 
   return (
     <Container className="mt-5">
@@ -85,7 +83,7 @@ const LoginPage = () => {
         </Col>
       </Row>
     </Container>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage

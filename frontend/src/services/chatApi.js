@@ -1,80 +1,77 @@
-/* eslint-disable functional/no-expression-statement */
-/* eslint-disable functional/no-conditional-statement */
-/* eslint-disable import/prefer-default-export */
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { apiPath } from '../routes';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import routes, { apiPath } from '../routes'
 
 const chatApi = createApi({
   reducerPath: 'chatApi',
   baseQuery: fetchBaseQuery({
     baseUrl: apiPath,
     prepareHeaders: (headers, { getState }) => {
-      const { token } = getState().authReducer;
+      const { token } = getState().authReducer
 
       if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
+        headers.set('Authorization', `Bearer ${token}`)
       }
 
-      return headers;
+      return headers
     },
   }),
   tagTypes: ['Channels', 'Messages'],
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     signupUser: builder.mutation({
-      query: (userData) => ({
-        url: '/signup',
+      query: userData => ({
+        url: routes.registerPath(),
         method: 'POST',
         body: userData,
       }),
     }),
     loginUser: builder.mutation({
-      query: (userData) => ({
-        url: '/login',
+      query: userData => ({
+        url: routes.loginPath(),
         method: 'POST',
         body: userData,
       }),
     }),
-    getChannels: builder.query({
-      query: () => '/channels',
-      providesTags: ['Channels'],
-    }),
     getMessages: builder.query({
-      query: () => '/messages',
+      query: () => routes.messagesPath(),
       providesTags: ['Messages'],
     }),
     addMessage: builder.mutation({
-      query: (message) => ({
-        url: '/messages',
+      query: message => ({
+        url: routes.messagesPath(),
         method: 'POST',
         body: message,
       }),
       invalidatesTags: ['Messages'],
     }),
+    getChannels: builder.query({
+      query: () => routes.channelsPath(),
+      providesTags: ['Channels'],
+    }),
     addChannel: builder.mutation({
-      query: (channel) => ({
-        url: '/channels',
+      query: channel => ({
+        url: routes.channelsPath(),
         method: 'POST',
         body: channel,
       }),
       invalidatesTags: ['Channels'],
     }),
     editChannel: builder.mutation({
-      query: (channel) => ({
-        url: `channels/${channel.id}`,
+      query: channel => ({
+        url: routes.channelPath(channel.id),
         method: 'PATCH',
         body: { name: channel.name },
       }),
       invalidatesTags: ['Channels'],
     }),
     removeChannel: builder.mutation({
-      query: (channelId) => ({
-        url: `channels/${channelId}`,
+      query: channelId => ({
+        url: routes.channelPath(channelId),
         method: 'DELETE',
       }),
       invalidatesTags: ['Channels', 'Messages'],
     }),
   }),
-});
+})
 
 const {
   useSignupUserMutation,
@@ -85,7 +82,7 @@ const {
   useAddChannelMutation,
   useEditChannelMutation,
   useRemoveChannelMutation,
-} = chatApi;
+} = chatApi
 
 export {
   chatApi,
@@ -97,4 +94,4 @@ export {
   useAddChannelMutation as addChannelMutation,
   useEditChannelMutation as editChannelMutation,
   useRemoveChannelMutation as removeChannelMutation,
-};
+}

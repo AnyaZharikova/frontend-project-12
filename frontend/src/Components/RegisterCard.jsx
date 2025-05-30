@@ -1,11 +1,11 @@
-import { Form, Card } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Form, Card } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
-import InputField from './InputField.jsx';
-import SubmitButton from './SubmitButton.jsx';
+import InputField from './InputField.jsx'
+import SubmitButton from './SubmitButton.jsx'
 
 const RegisterCard = (props) => {
-  const { values } = props;
+  const { values } = props
   const {
     formik,
     title,
@@ -18,7 +18,7 @@ const RegisterCard = (props) => {
     path,
     registerFailed,
     inputRef,
-  } = values;
+  } = values
 
   const propsUsername = {
     formik,
@@ -28,7 +28,7 @@ const RegisterCard = (props) => {
     failed: (formik.errors.username && formik.touched.username) || registerFailed,
     inputRef,
     error: formik.errors.username,
-  };
+  }
 
   const propsPassword = {
     formik,
@@ -38,7 +38,7 @@ const RegisterCard = (props) => {
     failed: (formik.errors.password && formik.touched.password) || registerFailed,
     inputRef: null,
     error: formik.errors.password,
-  };
+  }
 
   const propsPasswordConfirmationValues = {
     formik,
@@ -51,7 +51,7 @@ const RegisterCard = (props) => {
     ),
     inputRef: null,
     error: registerFailed ? userExists : formik.errors.passwordConfirmation,
-  };
+  }
 
   return (
     <Card className="shadow-sm">
@@ -74,7 +74,7 @@ const RegisterCard = (props) => {
         </div>
       </Card.Footer>
     </Card>
-  );
-};
+  )
+}
 
-export default RegisterCard;
+export default RegisterCard

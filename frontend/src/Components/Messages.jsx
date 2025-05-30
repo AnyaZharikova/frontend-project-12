@@ -1,39 +1,36 @@
-/* eslint-disable functional/no-conditional-statement */
-/* eslint-disable functional/no-expression-statement */
 import {
   Col,
   Card,
   Spinner,
   Alert,
-} from 'react-bootstrap';
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { getMessagesQuery, getChannelsQuery } from '../services/chatApi';
-import MessageForm from './MessageForm.jsx';
+} from 'react-bootstrap'
+import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import { getMessagesQuery, getChannelsQuery } from '../services/chatApi'
+import MessageForm from './MessageForm.jsx'
 
 const Messages = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
-  const { data: channels = [] } = getChannelsQuery();
+  const { data: channels = [] } = getChannelsQuery()
   const {
     data: messages = [],
     isLoading,
     isError,
-  } = getMessagesQuery();
+  } = getMessagesQuery()
 
-  const activeChannelId = useSelector((state) => state.channelsReducer.activeChannelId);
+  const activeChannelId = useSelector(state => state.channelsReducer.activeChannelId)
   const activeChannel = channels
-    .find((channel) => Number(channel.id) === Number(activeChannelId));
+    .find(channel => Number(channel.id) === Number(activeChannelId))
   const filteredMessages = messages
-    .filter((message) => Number(message.channelId) === Number(activeChannelId));
+    .filter(message => Number(message.channelId) === Number(activeChannelId))
 
   if (isLoading) {
     return (
       <Col className="col p-0 h-100 d-flex justify-content-center align-items-center">
         <Spinner animation="border" variant="primary" />
       </Col>
-    );
+    )
   }
 
   if (isError) {
@@ -41,7 +38,7 @@ const Messages = () => {
       <Col className="col p-0 h-100 d-flex justify-content-center align-items-center text-danger">
         <Alert variant="danger">{t('errors.loadingError')}</Alert>
       </Col>
-    );
+    )
   }
 
   if (!activeChannel) {
@@ -49,7 +46,7 @@ const Messages = () => {
       <Col className="col p-0 h-100 d-flex justify-content-center align-items-center text-muted">
         <Alert variant="secondary">{t('channelWarning')}</Alert>
       </Col>
-    );
+    )
   }
 
   return (
@@ -67,7 +64,7 @@ const Messages = () => {
         </Card>
 
         <div id="messages-box" className="chat-messages overflow-auto px-4 mb-2">
-          {filteredMessages.map((msg) => (
+          {filteredMessages.map(msg => (
             <div key={msg.id} className="text-break mb-2">
               <strong>{msg.username}</strong>
               {`: ${msg.body}`}
@@ -78,7 +75,7 @@ const Messages = () => {
         <MessageForm />
       </div>
     </Col>
-  );
-};
+  )
+}
 
-export default Messages;
+export default Messages

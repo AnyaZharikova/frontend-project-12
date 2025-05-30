@@ -1,7 +1,7 @@
-import Form from 'react-bootstrap/Form';
+import Form from 'react-bootstrap/Form'
 
 const InputField = (props) => {
-  const { values } = props;
+  const { values } = props
   const {
     formik,
     field,
@@ -10,7 +10,7 @@ const InputField = (props) => {
     failed,
     inputRef,
     error,
-  } = values;
+  } = values
 
   return (
     <Form.Floating className="mb-3">
@@ -32,7 +32,7 @@ const InputField = (props) => {
         {error}
       </Form.Control.Feedback>
     </Form.Floating>
-  );
-};
+  )
+}
 
-export default InputField;
+export default InputField

@@ -1,8 +1,8 @@
-import { Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap'
 
 const SubmitButton = (props) => {
-  const { values } = props;
-  const { formik, title } = values;
+  const { values } = props
+  const { formik, title } = values
 
   return (
     <div className="d-grid">
@@ -14,7 +14,7 @@ const SubmitButton = (props) => {
         {title}
       </Button>
     </div>
-  );
-};
+  )
+}
 
-export default SubmitButton;
+export default SubmitButton

@@ -1,48 +1,47 @@
-/* eslint-disable functional/no-try-statement */
-/* eslint-disable functional/no-expression-statement */
-import { Form, InputGroup, Button } from 'react-bootstrap';
-import { useFormik } from 'formik';
-import { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import leoProfanity from 'leo-profanity';
-import { addMessageMutation } from '../services/chatApi';
-import { messageSchema } from '../validation/validationSchema.js';
+import { Form, InputGroup, Button } from 'react-bootstrap'
+import { useFormik } from 'formik'
+import { useEffect, useRef } from 'react'
+import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import leoProfanity from 'leo-profanity'
+import { addMessageMutation } from '../services/chatApi'
+import { messageSchema } from '../validation/validationSchema.js'
 
 const MessageForm = () => {
-  const { t } = useTranslation();
-  const inputRef = useRef();
-  const username = useSelector((state) => state.authReducer.username);
-  const activeChannelId = useSelector((state) => state.channelsReducer.activeChannelId);
-  const [addMessage] = addMessageMutation();
+  const { t } = useTranslation()
+  const inputRef = useRef()
+  const username = useSelector(state => state.authReducer.username)
+  const activeChannelId = useSelector(state => state.channelsReducer.activeChannelId)
+  const [addMessage] = addMessageMutation()
 
   useEffect(() => {
-    inputRef.current.focus();
-  }, []);
+    inputRef.current.focus()
+  }, [])
 
   const formik = useFormik({
     initialValues: { body: '' },
     validationSchema: messageSchema(t('errors.required')),
     onSubmit: async (values) => {
-      const { body } = values;
-      const censorBody = leoProfanity.clean(body);
+      const { body } = values
+      const censorBody = leoProfanity.clean(body)
       const newMessage = {
         body: censorBody,
         channelId: activeChannelId,
         username,
-      };
+      }
 
       try {
-        await addMessage(newMessage).unwrap();
-        formik.resetForm();
-      } catch (err) {
-        console.error('Ошибка отправки:', err);
-        toast.error(t('errors.messageSendError'));
+        await addMessage(newMessage).unwrap()
+        formik.resetForm()
       }
-      inputRef.current.focus();
+      catch {
+        toast.error(t('errors.messageSendError'))
+      }
+
+      inputRef.current.focus()
     },
-  });
+  })
 
   return (
     <Form onSubmit={formik.handleSubmit} noValidate className="mt-auto px-5 py-3">
@@ -66,7 +65,7 @@ const MessageForm = () => {
         </Button>
       </InputGroup>
     </Form>
-  );
-};
+  )
+}
 
-export default MessageForm;
+export default MessageForm

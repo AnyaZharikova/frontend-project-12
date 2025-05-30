@@ -1,5 +1,5 @@
-import { io } from 'socket.io-client';
+import { io } from 'socket.io-client'
 
-const initSocket = (token) => io({ auth: { token } });
+const initSocket = token => io({ auth: { token } })
 
-export default initSocket;
+export default initSocket

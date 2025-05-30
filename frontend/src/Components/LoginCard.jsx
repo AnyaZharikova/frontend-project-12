@@ -1,11 +1,11 @@
-import { Form, Card } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Form, Card } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
-import InputField from './InputField.jsx';
-import SubmitButton from './SubmitButton.jsx';
+import InputField from './InputField.jsx'
+import SubmitButton from './SubmitButton.jsx'
 
 const LoginCard = (props) => {
-  const { values } = props;
+  const { values } = props
   const {
     formik,
     title,
@@ -17,7 +17,7 @@ const LoginCard = (props) => {
     path,
     authFailed,
     inputRef,
-  } = values;
+  } = values
 
   const propsUsername = {
     formik,
@@ -27,7 +27,7 @@ const LoginCard = (props) => {
     authFailed,
     inputRef,
     error: '',
-  };
+  }
 
   const propsPassword = {
     formik,
@@ -37,7 +37,7 @@ const LoginCard = (props) => {
     failed: authFailed,
     inputRef: null,
     error,
-  };
+  }
 
   return (
     <Card className="shadow-sm">
@@ -59,7 +59,7 @@ const LoginCard = (props) => {
         </div>
       </Card.Footer>
     </Card>
-  );
-};
+  )
+}
 
-export default LoginCard;
+export default LoginCard

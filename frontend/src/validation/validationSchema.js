@@ -1,9 +1,9 @@
-import * as yup from 'yup';
+import * as yup from 'yup'
 
-const loginSchema = (message) => yup.object().shape({
+const loginSchema = message => yup.object().shape({
   username: yup.string().required(message),
   password: yup.string().required(message),
-});
+})
 
 const registrationSchema = (nameMessage, passwordMessage, required, equal) => yup.object().shape({
   username: yup
@@ -25,11 +25,11 @@ const registrationSchema = (nameMessage, passwordMessage, required, equal) => yu
       [yup.ref('password'), null],
       equal,
     ),
-});
+})
 
-const messageSchema = (message) => yup.object().shape({
+const messageSchema = message => yup.object().shape({
   body: yup.string().trim().required(message),
-});
+})
 
 const newChannelSchema = (channels, doubleMessage, lengthMessage) => yup.object().shape({
   channelName: yup
@@ -38,12 +38,12 @@ const newChannelSchema = (channels, doubleMessage, lengthMessage) => yup.object(
     .min(3, lengthMessage)
     .max(20, lengthMessage)
     .required(lengthMessage)
-    .notOneOf(channels.map((channel) => channel.name), doubleMessage),
-});
+    .notOneOf(channels.map(channel => channel.name), doubleMessage),
+})
 
 export {
   loginSchema,
   registrationSchema,
   messageSchema,
   newChannelSchema,
-};
+}
