@@ -40,7 +40,7 @@ const AddChannel = () => {
     if (isShown) {
       formik.resetForm()
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // formik is not memoized, adding it will lead to infinite calls
   }, [isShown])
 
   const handleClose = () => dispatch(closeModal())

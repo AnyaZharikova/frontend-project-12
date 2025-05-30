@@ -38,7 +38,6 @@ const RenameChannel = () => {
     if (isShown) {
       formik.resetForm()
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isShown])
 
   const handleClose = () => dispatch(closeModal())
