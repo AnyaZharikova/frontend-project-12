@@ -6,6 +6,7 @@ import { getChannelsQuery, editChannelMutation } from '../../services/chatApi.js
 import { newChannelSchema } from '../../validation/validationSchema.js'
 import ModalInput from './ModalInput.jsx'
 import { closeModal } from '../../slices/modalsSlice'
+import { useEffect } from 'react'
 
 const RenameChannel = () => {
   const { t } = useTranslation()
@@ -31,13 +32,19 @@ const RenameChannel = () => {
     },
   })
 
+  useEffect(() => {
+    if (isShown) {
+      formik.resetForm()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isShown])
+
   const handleClose = () => dispatch(closeModal())
 
   const values = {
     isShown,
     formik,
     title: t('modals.rename'),
-    field: 'channelName',
     handleClose,
     cancelButton: t('cancel'),
     submitButton: t('modals.rename'),

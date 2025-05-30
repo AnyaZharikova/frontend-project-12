@@ -7,6 +7,7 @@ import { getChannelsQuery, addChannelMutation } from '../../services/chatApi.js'
 import { newChannelSchema } from '../../validation/validationSchema.js'
 import { closeModal } from '../../slices/modalsSlice'
 import ModalInput from './ModalInput.jsx'
+import { useEffect } from 'react'
 
 const AddChannel = () => {
   const { t } = useTranslation()
@@ -17,7 +18,7 @@ const AddChannel = () => {
 
   const formik = useFormik({
     initialValues: { channelName: '' },
-    validationSchema: newChannelSchema(channels, t('errors.channelExist'), t('registrationRules.name')),
+    validationSchema: newChannelSchema(channels, t('errors.unique'), t('registrationRules.name')),
     onSubmit: async (values) => {
       const censoredChannelName = leoProfanity.clean(values.channelName)
       const newChannel = { name: censoredChannelName }
@@ -33,13 +34,19 @@ const AddChannel = () => {
     },
   })
 
+  useEffect(() => {
+    if (isShown) {
+      formik.resetForm()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isShown])
+
   const handleClose = () => dispatch(closeModal())
 
   const values = {
     isShown,
     formik,
     title: t('modals.addChannel'),
-    field: 'channelName',
     handleClose,
     cancelButton: t('cancel'),
     submitButton: t('modals.submitButton'),
