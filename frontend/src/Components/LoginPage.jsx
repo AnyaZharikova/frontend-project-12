@@ -65,10 +65,11 @@ const LoginPage = () => {
   const values = {
     formik,
     title: t('entry'),
+    buttonTitle: t('entry'),
     placeholderName: t('placeholders.login'),
     placeholderPassword: t('placeholders.password'),
     noAccount: t('noAccount'),
-    registration: t('makeRegistration'),
+    registration: t('registration'),
     error: t('errors.invalidFeedback'),
     path: routes.registerPath(),
     authFailed,

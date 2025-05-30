@@ -9,6 +9,7 @@ const RegisterCard = (props) => {
   const {
     formik,
     title,
+    buttonTitle,
     placeholderUsername,
     placeholderPassword,
     placeholderPasswordConfirmation,
@@ -63,7 +64,7 @@ const RegisterCard = (props) => {
           <InputField values={propsPassword} />
           <InputField values={propsPasswordConfirmationValues} />
 
-          <SubmitButton values={{ formik, title }} />
+          <SubmitButton values={{ formik, buttonTitle }} />
         </Form>
       </Card.Body>
 

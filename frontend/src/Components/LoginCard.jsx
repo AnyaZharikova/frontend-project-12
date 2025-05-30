@@ -9,6 +9,7 @@ const LoginCard = (props) => {
   const {
     formik,
     title,
+    buttonTitle,
     placeholderName,
     placeholderPassword,
     noAccount,
@@ -48,7 +49,7 @@ const LoginCard = (props) => {
           <InputField values={propsUsername} />
           <InputField values={propsPassword} />
 
-          <SubmitButton values={{ formik, title }} />
+          <SubmitButton values={{ formik, buttonTitle }} />
         </Form>
       </Card.Body>
 

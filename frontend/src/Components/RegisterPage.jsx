@@ -51,7 +51,7 @@ const RegisterPage = () => {
 
         toast.success(t('success.registration'))
         setRegisterFailed(false)
-        navigate(routes.channelPath())
+        navigate(routes.chatPath())
       }
       catch (err) {
         if (err.status === 409) {
@@ -71,6 +71,7 @@ const RegisterPage = () => {
   const values = {
     formik,
     title: t('registration'),
+    buttonTitle: t('makeRegistration'),
     placeholderUsername: t('placeholders.username'),
     placeholderPassword: t('placeholders.password'),
     placeholderPasswordConfirmation: t('placeholders.passwordConfirmation'),

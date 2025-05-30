@@ -2,7 +2,7 @@ import { Button } from 'react-bootstrap'
 
 const SubmitButton = (props) => {
   const { values } = props
-  const { formik, title } = values
+  const { formik, buttonTitle } = values
 
   return (
     <div className="d-grid">
@@ -11,7 +11,7 @@ const SubmitButton = (props) => {
         type="submit"
         disabled={formik.isSubmitting}
       >
-        {title}
+        {buttonTitle}
       </Button>
     </div>
   )
