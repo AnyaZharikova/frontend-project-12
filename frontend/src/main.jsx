@@ -14,7 +14,6 @@ import initSocket from './services/socket.js'
 import resources from './locales/index.js'
 import { setCredentials } from './slices/authSlice.js'
 
-leoProfanity.clearList()
 leoProfanity.add(leoProfanity.getDictionary('ru'))
 leoProfanity.list()
 
