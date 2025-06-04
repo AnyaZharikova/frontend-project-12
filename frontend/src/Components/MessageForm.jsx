@@ -5,7 +5,8 @@ import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import leoProfanity from 'leo-profanity'
-import { addMessageMutation } from '../services/chatApi'
+
+import { addMessageMutation } from '../services/api/index.js'
 import { messageSchema } from '../validation/validationSchema.js'
 
 const MessageForm = () => {

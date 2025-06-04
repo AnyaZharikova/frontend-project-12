@@ -2,7 +2,7 @@ import { Modal, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
-import { getChannelsQuery, removeChannelMutation } from '../../services/chatApi.js'
+import { getChannelsQuery, removeChannelMutation } from '../../services/api/index.js'
 import { closeModal } from '../../slices/modalsSlice'
 
 const RenameChannel = () => {

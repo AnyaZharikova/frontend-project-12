@@ -1,9 +1,9 @@
-import { chatApi } from './chatApi.js'
+import { channelsApi, messagesApi } from './api/index.js'
 
 const setupSocketHandlers = (socket, store) => {
   socket.on('newMessage', (message) => {
     store.dispatch(
-      chatApi.util.updateQueryData('getMessages', undefined, (draft) => {
+      messagesApi.util.updateQueryData('getMessages', undefined, (draft) => {
         draft.push(message)
       }),
     )
@@ -11,19 +11,19 @@ const setupSocketHandlers = (socket, store) => {
 
   socket.on('newChannel', (channel) => {
     store.dispatch(
-      chatApi.util.updateQueryData('getChannels', undefined, (draft) => {
+      channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
         draft.push(channel)
       }),
     )
   })
 
   socket.on('renameChannel', () => {
-    store.dispatch(chatApi.util.invalidateTags(['Channels']))
+    store.dispatch(channelsApi.util.invalidateTags(['Channels']))
   })
 
   socket.on('removeChannel', (channelId) => {
     store.dispatch(
-      chatApi.util.updateQueryData('getChannels', undefined, draft => draft.filter(ch => ch.id !== channelId)),
+      channelsApi.util.updateQueryData('getChannels', undefined, draft => draft.filter(ch => ch.id !== channelId)),
     )
   })
 }

@@ -6,7 +6,8 @@ import {
 } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { getMessagesQuery, getChannelsQuery } from '../services/chatApi'
+
+import { getMessagesQuery, getChannelsQuery } from '../services/api/index.js'
 import MessageForm from './MessageForm.jsx'
 
 const Messages = () => {
@@ -37,14 +38,6 @@ const Messages = () => {
     return (
       <Col className="col p-0 h-100 d-flex justify-content-center align-items-center text-danger">
         <Alert variant="danger">{t('errors.loadingError')}</Alert>
-      </Col>
-    )
-  }
-
-  if (!activeChannel) {
-    return (
-      <Col className="col p-0 h-100 d-flex justify-content-center align-items-center text-muted">
-        <Alert variant="secondary">{t('channelWarning')}</Alert>
       </Col>
     )
   }
