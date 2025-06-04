@@ -2,7 +2,7 @@
   "name": "@hexlet/code",
   "version": "1.0.0",
   "description": "project Chat",
-  "main": "index.js",
+  "main": "./frontend/src/index.js",
   "engines": {
     "node": "20.x"
   },
