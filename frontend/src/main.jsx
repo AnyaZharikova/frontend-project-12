@@ -1,34 +1,24 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
 import i18next from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { Provider } from 'react-redux'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import 'bootstrap-icons/font/bootstrap-icons.css'
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react'
 import leoProfanity from 'leo-profanity'
 
 import App from './Components/App.jsx'
 import setupSocketHandlers from './services/socketHandlers.js'
 import store from './services/index.js'
-import initSocket from './services/socket.js'
 import resources from './locales/index.js'
-import { setCredentials } from './slices/authSlice.js'
 
 leoProfanity.add(leoProfanity.getDictionary('ru'))
 leoProfanity.list()
 
-const restoreToken = () => {
-  const token = localStorage.getItem('token')
-  const username = localStorage.getItem('username')
-
-  if (username && token) {
-    store.dispatch(setCredentials({ username, token }))
-  }
-
-  return token
+const rollbarConfig = {
+  accessToken: import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN,
+  environment: 'testenv',
 }
 
-const initApp = () => {
+const initApp = (socket) => {
   const i18n = i18next.createInstance()
   i18n
     .use(initReactI18next)
@@ -37,19 +27,18 @@ const initApp = () => {
       fallbackLng: 'ru',
     })
 
-  const token = restoreToken()
-  const socket = initSocket(token)
-
   setupSocketHandlers(socket, store)
 
-  const mountNode = document.getElementById('root')
-  const root = ReactDOM.createRoot(mountNode)
-  root.render(
+  return (
     <React.StrictMode>
       <Provider store={store}>
-        <App />
+        <RollbarProvider config={rollbarConfig}>
+          <ErrorBoundary>
+            <App />
+          </ErrorBoundary>
+        </RollbarProvider>
       </Provider>
-    </React.StrictMode>,
+    </React.StrictMode>
   )
 }
 
