@@ -22,9 +22,9 @@ const Messages = () => {
 
   const activeChannelId = useSelector(state => state.channelsReducer.activeChannelId)
   const activeChannel = channels
-    .find(channel => Number(channel.id) === Number(activeChannelId))
+    .find(channel => channel.id === activeChannelId)
   const filteredMessages = messages
-    .filter(message => Number(message.channelId) === Number(activeChannelId))
+    .filter(message => String(message.channelId) === activeChannelId)
 
   if (isLoading) {
     return (
@@ -38,6 +38,14 @@ const Messages = () => {
     return (
       <Col className="col p-0 h-100 d-flex justify-content-center align-items-center text-danger">
         <Alert variant="danger">{t('errors.loadingError')}</Alert>
+      </Col>
+    )
+  }
+
+  if (!activeChannel) {
+    return (
+      <Col className="col p-0 h-100 d-flex justify-content-center align-items-center text-muted">
+        <Alert variant="secondary">{t('channelWarning')}</Alert>
       </Col>
     )
   }

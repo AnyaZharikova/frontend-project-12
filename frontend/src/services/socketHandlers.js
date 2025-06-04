@@ -21,10 +21,8 @@ const setupSocketHandlers = (socket, store) => {
     store.dispatch(channelsApi.util.invalidateTags(['Channels']))
   })
 
-  socket.on('removeChannel', (channelId) => {
-    store.dispatch(
-      channelsApi.util.updateQueryData('getChannels', undefined, draft => draft.filter(ch => ch.id !== channelId)),
-    )
+  socket.on('removeChannel', () => {
+    store.dispatch(channelsApi.util.invalidateTags(['Channels']))
   })
 }
 
