@@ -1,17 +1,15 @@
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import {
   Col,
   Button,
-  ButtonGroup,
-  Dropdown,
   Alert,
   Spinner,
 } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
-import { getChannelsQuery } from '../services/chatApi'
-import { setActiveChannel } from '../slices/channelsSlice.js'
+
+import Channel from './Channel.jsx'
+import { getChannelsQuery } from '../services/api/index.js'
 import { openModal } from '../slices/modalsSlice.js'
-import getModalComponent from './modal/index.js'
 
 const Channels = () => {
   const dispatch = useDispatch()
@@ -22,20 +20,6 @@ const Channels = () => {
     isLoading,
     isError,
   } = getChannelsQuery()
-  const activeChannelId = useSelector(state => state.channelsReducer.activeChannelId)
-  const modalType = useSelector(state => state.modalsReducer.modals.modalType)
-
-  const handleClick = (channelId) => {
-    dispatch(setActiveChannel(channelId))
-  }
-
-  const renderModal = () => {
-    if (modalType === '') {
-      return null
-    }
-    const ModalComponent = getModalComponent(modalType)
-    return <ModalComponent />
-  }
 
   if (isLoading) {
     return (
@@ -70,34 +54,9 @@ const Channels = () => {
       </div>
       <ul id="channels-id" className="nav flex-column nav-pills nav-fill px-2">
         {channels.map(channel => (
-          <li key={channel.id} className="nav-item w-100">
-            <ButtonGroup className="d-flex show dropdown">
-              <Button
-                id={channel.id}
-                variant={Number(channel.id) === Number(activeChannelId) ? 'secondary' : 'light'}
-                className="w-100 rounded-0 text-start text-truncate btn"
-                onClick={() => handleClick(channel.id)}
-              >
-                <span className="me-1">#</span>
-                {channel.name}
-              </Button>
-
-              {channel.removable && (
-                <Dropdown>
-                  <Dropdown.Toggle split variant={Number(channel.id) === Number(activeChannelId) ? 'secondary' : 'light'} className="flex-grow-0 rounded-0">
-                    <span className="visually-hidden">{t('modals.toggle')}</span>
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => dispatch(openModal({ type: 'rename', targetId: channel.id }))}>{t('modals.rename')}</Dropdown.Item>
-                    <Dropdown.Item onClick={() => dispatch(openModal({ type: 'remove', targetId: channel.id }))}>{t('modals.remove')}</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              )}
-            </ButtonGroup>
-          </li>
+          <Channel key={channel.id} channel={channel} />
         ))}
       </ul>
-      { renderModal() }
     </Col>
   )
 }
