@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import routes, { apiPath } from '../routes'
+import routes, { apiPath } from '../../routes'
 
-const chatApi = createApi({
-  reducerPath: 'chatApi',
+export const channelsApi = createApi({
+  reducerPath: 'channelsApi',
   baseQuery: fetchBaseQuery({
     baseUrl: apiPath,
     prepareHeaders: (headers, { getState }) => {
@@ -17,32 +17,6 @@ const chatApi = createApi({
   }),
   tagTypes: ['Channels', 'Messages'],
   endpoints: builder => ({
-    signupUser: builder.mutation({
-      query: userData => ({
-        url: routes.registerPath(),
-        method: 'POST',
-        body: userData,
-      }),
-    }),
-    loginUser: builder.mutation({
-      query: userData => ({
-        url: routes.loginPath(),
-        method: 'POST',
-        body: userData,
-      }),
-    }),
-    getMessages: builder.query({
-      query: () => routes.messagesPath(),
-      providesTags: ['Messages'],
-    }),
-    addMessage: builder.mutation({
-      query: message => ({
-        url: routes.messagesPath(),
-        method: 'POST',
-        body: message,
-      }),
-      invalidatesTags: ['Messages'],
-    }),
     getChannels: builder.query({
       query: () => routes.channelsPath(),
       providesTags: ['Channels'],
@@ -74,23 +48,14 @@ const chatApi = createApi({
 })
 
 const {
-  useSignupUserMutation,
-  useLoginUserMutation,
   useGetChannelsQuery,
-  useGetMessagesQuery,
-  useAddMessageMutation,
   useAddChannelMutation,
   useEditChannelMutation,
   useRemoveChannelMutation,
-} = chatApi
+} = channelsApi
 
 export {
-  chatApi,
-  useSignupUserMutation as signupUserMutation,
-  useLoginUserMutation as loginUserMutation,
   useGetChannelsQuery as getChannelsQuery,
-  useGetMessagesQuery as getMessagesQuery,
-  useAddMessageMutation as addMessageMutation,
   useAddChannelMutation as addChannelMutation,
   useEditChannelMutation as editChannelMutation,
   useRemoveChannelMutation as removeChannelMutation,
